@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#eee9dc">
+<title>SUNDAY ROOM · Illustrated Edition</title>
+<meta name="description" content="A little game about the way you live. Discover your SUNDAY ROOM type.">
+<meta property="og:title" content="SUNDAY ROOM · Illustrated Edition">
+<meta property="og:description" content="A little game about the way you live. Discover your Sunday type.">
+<meta property="og:type" content="website">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<style>
+:root{
+  --bg:#eee9dc;--paper:#f8f5eb;--ink:#4d4b42;--muted:#969287;
+  --line:#d9d3c5;--sage:#718b78;--sage2:#dbe3d6;--rose:#b88491;
+  --yellow:#d8bf58;--blue:#7ca3aa;--shadow:0 18px 50px rgba(72,68,53,.10)
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:#d9d5ca;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue","Noto Sans SC",Arial,sans-serif}
+body{min-height:100vh;display:flex;justify-content:center}
+button{font:inherit;color:inherit}
+.app{width:min(100%,430px);min-height:100vh;background:var(--bg);position:relative;overflow:hidden}
+.screen{min-height:100vh;padding:24px 21px 28px;display:none;flex-direction:column;position:relative}
+.screen.active{display:flex;animation:pageIn .35s ease}
+@keyframes pageIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.top{display:flex;justify-content:space-between;align-items:center;height:28px;font-size:11px;color:var(--muted);letter-spacing:.08em;position:relative;z-index:4}
+.back{border:0;background:none;padding:3px;font-size:22px;line-height:1;cursor:pointer}
+.progress{font-variant-numeric:tabular-nums;margin-right:52px;white-space:nowrap}
+.cover{padding:0;justify-content:flex-end;background:#e8e4d8}
+.cover-art{position:absolute;inset:0;overflow:hidden;background:linear-gradient(#dbe5df 0 57%,#e9e2d4 57%)}
+.cover-art .window{position:absolute;left:9%;top:10%;width:82%;height:45%;border:7px solid rgba(250,247,238,.75);background:#d8e6e0;box-shadow:inset 0 0 0 2px rgba(93,108,98,.08)}
+.cover-art .sun{position:absolute;right:15%;top:14%;width:62px;height:62px;border-radius:50%;background:#eadb9c;opacity:.72}
+.cover-art .table{position:absolute;left:-5%;right:-5%;bottom:7%;height:28%;background:repeating-linear-gradient(90deg,#aab8a0 0 35px,#e4d177 35px 43px,#aab8a0 43px 78px);transform:skewY(-3deg)}
+.cover-art .vase{position:absolute;bottom:27%;left:43%;width:34px;height:105px;background:rgba(111,156,151,.72);clip-path:polygon(25% 0,75% 0,66% 30%,90% 100%,10% 100%,34% 30%)}
+.flower{position:absolute;width:26px;height:26px;border-radius:50%;background:#b47c91;opacity:.9}
+.flower:before,.flower:after{content:"";position:absolute;inset:2px;background:#b47c91;border-radius:50%;transform:rotate(60deg)}
+.f1{left:39%;bottom:42%}.f2{left:50%;bottom:46%;width:19px;height:19px;background:#8c718b}.f3{left:56%;bottom:41%;width:31px;height:31px;background:#c28c98}.f4{left:61%;bottom:48%;width:18px;height:18px;background:#a7758a}
+.cover-content{position:relative;z-index:3;padding:52px 25px 29px;background:linear-gradient(180deg,transparent 0,rgba(238,233,220,.72) 22%,rgba(238,233,220,.98) 55%)}
+.brand{font-family:Georgia,"Noto Serif SC",serif;font-size:31px;letter-spacing:.12em;font-weight:400}
+.tag{margin-top:8px;color:#77756c;font-family:Georgia,"Noto Serif SC",serif;font-style:italic;font-size:13px}
+.primary{margin-top:24px;border:1px solid #c9c5b9;background:rgba(255,255,255,.72);border-radius:999px;padding:15px 19px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;box-shadow:var(--shadow)}
+.primary:active,.share:active,.next:active{transform:scale(.985)}
+.footer{text-align:center;color:#aaa79d;font-size:9px;letter-spacing:.13em;margin-top:18px}
+.question{padding-top:25px}
+.question h2{font-family:Georgia,"Noto Serif SC",serif;font-weight:400;font-size:27px;line-height:1.35;margin-top:48px}
+.sub{margin-top:10px;font-size:15px;color:var(--muted);line-height:1.8;letter-spacing:.01em}
+.options{margin-top:30px;display:grid;gap:10px}
+.option{border:1px solid var(--line);background:rgba(255,255,255,.48);border-radius:15px;padding:14px 14px;min-height:59px;display:flex;align-items:center;gap:12px;text-align:left;cursor:pointer;transition:.18s;box-shadow:0 4px 14px rgba(80,75,62,.025)}
+.option.selected{border-color:var(--sage);background:var(--sage2);box-shadow:0 5px 18px rgba(79,101,82,.08)}
+.option .icon{width:30px;text-align:center;font-size:19px}
+.option .copy{flex:1}.option b{display:block;font-size:14px;font-weight:500}.option small{display:block;color:var(--muted);font-size:10px;margin-top:4px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:27px}
+.tile{border:1px solid var(--line);background:rgba(255,255,255,.5);border-radius:15px;overflow:hidden;cursor:pointer;box-shadow:0 4px 14px rgba(80,75,62,.025)}
+.tile .pic{height:118px;background:#e4e9df;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.tile .label{padding:10px 9px;font-size:12px;text-align:center;background:rgba(255,255,255,.28)}
+.tile.selected{outline:2px solid var(--sage);background:var(--sage2)}
+.drink-grid{grid-template-columns:repeat(3,1fr)}.drink-grid .pic{height:96px}.drink-grid .label{font-size:11px}
+.illustration{width:100%;height:100%;display:block}
+.next{margin-top:auto;border:0;background:var(--sage);color:#fff;border-radius:999px;padding:15px 18px;cursor:pointer;opacity:.38;transition:.2s}
+.next.enabled{opacity:1}
+.result{padding:0;overflow:auto;background:var(--paper)}
+.result-hero{height:49vh;min-height:355px;background:#dfe6db;position:relative;overflow:hidden;padding:25px 23px;display:flex;align-items:flex-end}
+.result-hero:after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 25%,rgba(255,255,255,.5),transparent 30%),linear-gradient(180deg,transparent 55%,rgba(238,233,220,.55))}
+.room-scene{position:absolute;inset:0}
+.result-copy{position:relative;z-index:2}.eyebrow{font-size:10px;letter-spacing:.18em;color:#7d8178}
+.result-title{font-family:Georgia,"Noto Serif SC",serif;font-size:30px;font-weight:400;margin-top:6px}
+.result-name{font-size:14px;margin-top:5px}
+.result-body{padding:24px 21px 34px}
+.chips{display:flex;gap:7px;flex-wrap:wrap;margin:13px 0 21px}.chip{border:1px solid var(--line);border-radius:999px;padding:6px 10px;font-size:10px;color:#66685f;background:#fbfaf6}
+.quote{font-family:Georgia,"Noto Serif SC",serif;font-size:16px;line-height:1.85;padding:17px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.meta{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:19px}.meta div{text-align:center;font-size:10px;color:var(--muted)}.meta b{display:block;color:var(--ink);font-size:11px;font-weight:500;margin-top:6px}
+.share{margin-top:24px;width:100%;border:0;background:var(--sage);color:#fff;border-radius:999px;padding:15px;cursor:pointer}
+.restart{margin-top:9px;width:100%;border:1px solid var(--line);background:transparent;border-radius:999px;padding:13px;cursor:pointer}
+.lang-btn{position:fixed;right:max(62px,calc((100vw - 430px)/2 + 62px));top:18px;height:38px;border:1px solid rgba(80,80,70,.18);border-radius:19px;background:rgba(250,248,240,.78);backdrop-filter:blur(8px);z-index:20;cursor:pointer;padding:0 10px;font-size:10px;letter-spacing:.05em}.music-btn{position:fixed;right:max(16px,calc((100vw - 430px)/2 + 16px));top:18px;width:38px;height:38px;border:1px solid rgba(80,80,70,.18);border-radius:50%;background:rgba(250,248,240,.78);backdrop-filter:blur(8px);z-index:20;cursor:pointer}
+.music-btn.playing{animation:spin 4s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+.toast{position:fixed;left:50%;bottom:25px;transform:translate(-50%,20px);background:#41433c;color:white;border-radius:999px;padding:10px 15px;font-size:11px;opacity:0;pointer-events:none;transition:.25s;z-index:30;white-space:nowrap}.toast.show{opacity:1;transform:translate(-50%,0)}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:25;overflow:hidden}.confetti i{position:absolute;width:7px;height:12px;animation:fall 1.6s ease-out forwards}@keyframes fall{0%{transform:translateY(-30px) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(500deg);opacity:0}}
+.small-note{font-size:10px;color:var(--muted);text-align:center;margin-top:12px}
+.drink-cn{display:block;color:#9b978d;margin-top:4px;font-size:11px;font-weight:400;line-height:1.4;letter-spacing:.08em}.music-meta{display:block;color:#a09c91;margin-top:5px;font-size:9px;font-weight:400;line-height:1.35}.tile:has(.music-meta) .label{padding-top:10px}
+/* Responsive web edition */
+:root{--safe-top:env(safe-area-inset-top);--safe-bottom:env(safe-area-inset-bottom)}
+html{min-height:100%;background:#d9d5ca}
+body{min-height:100svh;overscroll-behavior-y:none}
+.app{width:min(100%,430px);min-height:100svh;box-shadow:0 0 70px rgba(72,68,53,.10)}
+.screen{min-height:100svh;padding-top:calc(24px + var(--safe-top));padding-bottom:calc(28px + var(--safe-bottom))}
+.result{height:100svh;min-height:100svh}
+.result-hero{min-height:clamp(355px,49svh,520px)}
+@media (min-width:700px){body{padding:24px 0}.app{min-height:calc(100svh - 48px);border-radius:22px}.screen{min-height:calc(100svh - 48px)}.result{height:calc(100svh - 48px)}}
+@media (max-width:360px){.screen{padding-left:16px;padding-right:16px}.result-body{padding-left:16px;padding-right:16px}.brand{font-size:28px}.result-title{font-size:27px}.question h2{font-size:25px}.meta{gap:4px}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+<link rel="manifest" href="./manifest.webmanifest">
+</head>
+<body>
+<div class="app">
+<button class="lang-btn" id="langBtn" aria-label="切换语言">中 / EN</button>
+<button class="music-btn" id="musicBtn" aria-label="背景音乐">♫</button>
+<audio id="gameAudio" preload="auto" loop></audio>
+
+<section class="screen active cover" id="s0">
+  <div class="cover-art">
+    <div class="window"></div><div class="sun"></div><div class="table"></div><div class="vase"></div>
+    <i class="flower f1"></i><i class="flower f2"></i><i class="flower f3"></i><i class="flower f4"></i>
+  </div>
+  <div class="cover-content">
+    <div class="brand">SUNDAY ROOM</div>
+    <div class="tag">A little game about the way you live.</div>
+    <button class="primary" id="startBtn"><span data-i18n="start">进入你的周日下午</span><span>→</span></button>
+    <div class="footer">ILLUSTRATED EDITION · 2026</div>
+  </div>
+</section>
+
+<section class="screen question" id="s1"><div class="top"><button class="back" data-action="back">←</button><span class="progress">01 / 07</span></div><h2 data-i18n="q1title">你几点醒？</h2><p class="sub" data-i18n-html="q1sub">今天是星期日。<br>你睡多久？</p><div class="options" id="wake"></div><button class="next" id="n1" data-action="next" data-i18n="next">下一步 →</button></section>
+<section class="screen question" id="s2"><div class="top"><button class="back" data-action="back">←</button><span class="progress">02 / 07</span></div><h2 data-i18n="q2title">你的窗外</h2><p class="sub" data-i18n-html="q2sub">拉开窗帘，<br>你会看到什么样的风景？</p><div class="grid" id="view"></div><button class="next" id="n2" data-action="next" data-i18n="next">下一步 →</button></section>
+<section class="screen question" id="s3"><div class="top"><button class="back" data-action="back">←</button><span class="progress">03 / 07</span></div><h2 data-i18n="q3title">房间里需要什么？</h2><p class="sub" data-i18n-html="q3sub">从下面选择 3 个，<br>放进你的房间吧。</p><div class="grid" id="room"></div><button class="next" id="n3" data-i18n="choose3">选择 3 个</button></section>
+<section class="screen question" id="s4"><div class="top"><button class="back" data-action="back">←</button><span class="progress">04 / 07</span></div><h2 data-i18n="q4title">突然下雨了</h2><p class="sub" data-i18n-html="q4sub">Rainy Sunday.<br>你现在想做什么？</p><div class="options" id="rain"></div><button class="next" id="n4" data-action="next" data-i18n="next">下一步 →</button></section>
+<section class="screen question" id="s5"><div class="top"><button class="back" data-action="back">←</button><span class="progress">05 / 07</span></div><h2 data-i18n="q5title">下午三点</h2><p class="sub" data-i18n-html="q5sub">桌上出现了一个空杯子，<br>你想喝什么？</p><div class="grid drink-grid" id="drink"></div><button class="next" id="n5" data-action="next" data-i18n="next">下一步 →</button></section>
+<section class="screen question" id="s6"><div class="top"><button class="back" data-action="back">←</button><span class="progress">06 / 07</span></div><h2 data-i18n="q6title">Sunday soundtrack</h2><p class="sub" data-i18n="q6sub">凭第一感觉选，点击卡片即可播放。</p><div class="grid" id="music"></div><button class="next" id="n6" data-action="next" data-i18n="next">下一步 →</button></section>
+<section class="screen question" id="s7"><div class="top"><button class="back" data-action="back">←</button><span class="progress">07 / 07</span></div><h2 data-i18n="q7title">有人敲门</h2><p class="sub" data-i18n-html="q7sub">下午 5:20。<br>你的朋友突然来找你。</p><div class="options" id="friend"></div><button class="next" id="n7" data-i18n="seeResult">看看你的 Sunday →</button></section>
+
+<section class="screen result" id="s8">
+  <div class="result-hero"><div class="room-scene" id="roomScene"></div><div class="result-copy"><div class="eyebrow" data-i18n="resultEyebrow">YOUR SUNDAY TYPE</div><div class="result-title" id="resultTitle">GREEN SUNDAY</div><div class="result-name" id="resultName">植物系生活者</div></div></div>
+  <div class="result-body"><div class="chips" id="chips"></div><div class="quote" id="quote"></div><div class="meta" id="meta"></div><button class="share" id="shareBtn" data-i18n="share">保存 / 分享我的 Sunday</button><div class="small-note" id="shareHint" data-i18n="shareHint">会生成一张带二维码的 Sunday 结果海报</div><button class="restart" id="restartBtn" data-i18n="restart">再玩一次</button><div class="small-note" data-i18n="screenshot">截图这张卡片，也很好看。</div><div class="footer">SUNDAY ROOM · BETTER SUNDAYS</div></div>
+</section>
+<div class="toast" id="toast">已复制分享文案</div><div class="confetti" id="confetti"></div>
+</div>
+
+<script src="./qr.js"></script>
+<script src="./app.js"></script>
+
+</body>
+</html>
