@@ -90,6 +90,8 @@ body{min-height:100svh;overscroll-behavior-y:none}
 @media (min-width:700px){body{padding:24px 0}.app{min-height:calc(100svh - 48px);border-radius:22px}.screen{min-height:calc(100svh - 48px)}.result{height:calc(100svh - 48px)}}
 @media (max-width:360px){.screen{padding-left:16px;padding-right:16px}.result-body{padding-left:16px;padding-right:16px}.brand{font-size:28px}.result-title{font-size:27px}.question h2{font-size:25px}.meta{gap:4px}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+.poster-modal{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;padding:18px;box-sizing:border-box}.poster-modal.show{display:flex}.poster-backdrop{position:absolute;inset:0;background:rgba(45,44,39,.62);backdrop-filter:blur(8px)}.poster-dialog{position:relative;z-index:1;width:min(92vw,430px);max-height:92svh;display:flex;flex-direction:column;align-items:center;background:#f7f3e9;border:1px solid rgba(80,75,62,.14);border-radius:20px;padding:14px 14px 16px;box-sizing:border-box;box-shadow:0 20px 70px rgba(0,0,0,.22)}.poster-preview-wrap{width:min(100%,360px);max-height:calc(92svh - 118px);display:flex;align-items:center;justify-content:center;overflow:auto;border-radius:12px;background:#e8e2d7}.poster-preview{display:block;width:100%;height:auto;max-height:calc(92svh - 118px);object-fit:contain;border-radius:10px}.poster-close{position:absolute;right:10px;top:8px;width:34px;height:34px;border:0;border-radius:50%;background:rgba(247,243,233,.92);font-size:25px;line-height:1;z-index:3;cursor:pointer;color:#55564f}.poster-actions{width:min(100%,360px);display:grid;grid-template-columns:1fr;gap:9px;margin-top:12px}.poster-action{border-radius:999px;padding:12px 10px;font-size:12px;cursor:pointer}.primary-poster{border:0;background:var(--sage);color:#fff}.secondary-poster{border:1px solid var(--line);background:transparent;color:var(--ink)}
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 </head>
@@ -114,7 +116,7 @@ body{min-height:100svh;overscroll-behavior-y:none}
 
 <section class="screen question" id="s1"><div class="top"><button class="back" data-action="back">←</button><span class="progress">01 / 07</span></div><h2 data-i18n="q1title">你几点醒？</h2><p class="sub" data-i18n-html="q1sub">今天是星期日。<br>你睡多久？</p><div class="options" id="wake"></div><button class="next" id="n1" data-action="next" data-i18n="next">下一步 →</button></section>
 <section class="screen question" id="s2"><div class="top"><button class="back" data-action="back">←</button><span class="progress">02 / 07</span></div><h2 data-i18n="q2title">你的窗外</h2><p class="sub" data-i18n-html="q2sub">拉开窗帘，<br>你会看到什么样的风景？</p><div class="grid" id="view"></div><button class="next" id="n2" data-action="next" data-i18n="next">下一步 →</button></section>
-<section class="screen question" id="s3"><div class="top"><button class="back" data-action="back">←</button><span class="progress">03 / 07</span></div><h2 data-i18n="q3title">房间里需要什么？</h2><p class="sub" data-i18n-html="q3sub">从下面选择 3 个，<br>放进你的房间吧。</p><div class="grid" id="room"></div><button class="next" id="n3" data-i18n="choose3">选择 3 个</button></section>
+<section class="screen question" id="s3"><div class="top"><button class="back" data-action="back">←</button><span class="progress">03 / 07</span></div><h2 data-i18n="q3title">房间里需要什么？</h2><p class="sub" data-i18n-html="q3sub">从下面选择 3 个，<br>放进你的房间吧。</p><div class="grid" id="room"></div><button class="next" id="n3" data-action="next" data-i18n="choose3">选择 3 个</button></section>
 <section class="screen question" id="s4"><div class="top"><button class="back" data-action="back">←</button><span class="progress">04 / 07</span></div><h2 data-i18n="q4title">突然下雨了</h2><p class="sub" data-i18n-html="q4sub">Rainy Sunday.<br>你现在想做什么？</p><div class="options" id="rain"></div><button class="next" id="n4" data-action="next" data-i18n="next">下一步 →</button></section>
 <section class="screen question" id="s5"><div class="top"><button class="back" data-action="back">←</button><span class="progress">05 / 07</span></div><h2 data-i18n="q5title">下午三点</h2><p class="sub" data-i18n-html="q5sub">桌上出现了一个空杯子，<br>你想喝什么？</p><div class="grid drink-grid" id="drink"></div><button class="next" id="n5" data-action="next" data-i18n="next">下一步 →</button></section>
 <section class="screen question" id="s6"><div class="top"><button class="back" data-action="back">←</button><span class="progress">06 / 07</span></div><h2 data-i18n="q6title">Sunday soundtrack</h2><p class="sub" data-i18n="q6sub">凭第一感觉选，点击卡片即可播放。</p><div class="grid" id="music"></div><button class="next" id="n6" data-action="next" data-i18n="next">下一步 →</button></section>
@@ -124,6 +126,16 @@ body{min-height:100svh;overscroll-behavior-y:none}
   <div class="result-hero"><div class="room-scene" id="roomScene"></div><div class="result-copy"><div class="eyebrow" data-i18n="resultEyebrow">YOUR SUNDAY TYPE</div><div class="result-title" id="resultTitle">GREEN SUNDAY</div><div class="result-name" id="resultName">植物系生活者</div></div></div>
   <div class="result-body"><div class="chips" id="chips"></div><div class="quote" id="quote"></div><div class="meta" id="meta"></div><button class="share" id="shareBtn" data-i18n="share">保存 / 分享我的 Sunday</button><div class="small-note" id="shareHint" data-i18n="shareHint">会生成一张带二维码的 Sunday 结果海报</div><button class="restart" id="restartBtn" data-i18n="restart">再玩一次</button><div class="small-note" data-i18n="screenshot">截图这张卡片，也很好看。</div><div class="footer">SUNDAY ROOM · BETTER SUNDAYS</div></div>
 </section>
+<div class="poster-modal" id="posterModal" aria-hidden="true">
+  <div class="poster-backdrop" id="posterBackdrop"></div>
+  <div class="poster-dialog" role="dialog" aria-modal="true" aria-label="Sunday result poster">
+    <button class="poster-close" id="posterClose" aria-label="Close">×</button>
+    <div class="poster-preview-wrap"><img id="posterPreview" class="poster-preview" alt="SUNDAY ROOM result poster"></div>
+    <div class="poster-actions">
+      <button class="poster-action primary-poster" id="posterShareBtn">保存并分享</button>
+    </div>
+  </div>
+</div>
 <div class="toast" id="toast">已复制分享文案</div><div class="confetti" id="confetti"></div>
 </div>
 
