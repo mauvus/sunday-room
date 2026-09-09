@@ -1,8 +1,6 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1654173031262992"
-     crossorigin="anonymous"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#eee9dc">
@@ -94,6 +92,7 @@ body{min-height:100svh;overscroll-behavior-y:none}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 
 .poster-modal{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;padding:18px;box-sizing:border-box}.poster-modal.show{display:flex}.poster-backdrop{position:absolute;inset:0;background:rgba(45,44,39,.62);backdrop-filter:blur(8px)}.poster-dialog{position:relative;z-index:1;width:min(92vw,430px);max-height:92svh;display:flex;flex-direction:column;align-items:center;background:#f7f3e9;border:1px solid rgba(80,75,62,.14);border-radius:20px;padding:14px 14px 16px;box-sizing:border-box;box-shadow:0 20px 70px rgba(0,0,0,.22)}.poster-preview-wrap{width:min(100%,360px);max-height:calc(92svh - 118px);display:flex;align-items:center;justify-content:center;overflow:auto;border-radius:12px;background:#e8e2d7}.poster-preview{display:block;width:100%;height:auto;max-height:calc(92svh - 118px);object-fit:contain;border-radius:10px}.poster-close{position:absolute;right:10px;top:8px;width:34px;height:34px;border:0;border-radius:50%;background:rgba(247,243,233,.92);font-size:25px;line-height:1;z-index:3;cursor:pointer;color:#55564f}.poster-actions{width:min(100%,360px);display:grid;grid-template-columns:1fr;gap:9px;margin-top:12px}.poster-action{border-radius:999px;padding:12px 10px;font-size:12px;cursor:pointer}.primary-poster{border:0;background:var(--sage);color:#fff}.secondary-poster{border:1px solid var(--line);background:transparent;color:var(--ink)}
+.quote-cn{display:block;color:var(--muted);font-family:"Noto Serif SC",Georgia,serif;font-size:13px;margin-top:4px}.meta b small{display:block;color:var(--muted);font-size:9px;font-weight:400;margin-top:3px}.chip{line-height:1.45}
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 </head>
@@ -121,7 +120,7 @@ body{min-height:100svh;overscroll-behavior-y:none}
 <section class="screen question" id="s3"><div class="top"><button class="back" data-action="back">←</button><span class="progress">03 / 07</span></div><h2 data-i18n="q3title">房间里需要什么？</h2><p class="sub" data-i18n-html="q3sub">从下面选择 3 个，<br>放进你的房间吧。</p><div class="grid" id="room"></div><button class="next" id="n3" data-action="next" data-i18n="choose3">选择 3 个</button></section>
 <section class="screen question" id="s4"><div class="top"><button class="back" data-action="back">←</button><span class="progress">04 / 07</span></div><h2 data-i18n="q4title">突然下雨了</h2><p class="sub" data-i18n-html="q4sub">Rainy Sunday.<br>你现在想做什么？</p><div class="options" id="rain"></div><button class="next" id="n4" data-action="next" data-i18n="next">下一步 →</button></section>
 <section class="screen question" id="s5"><div class="top"><button class="back" data-action="back">←</button><span class="progress">05 / 07</span></div><h2 data-i18n="q5title">下午三点</h2><p class="sub" data-i18n-html="q5sub">桌上出现了一个空杯子，<br>你想喝什么？</p><div class="grid drink-grid" id="drink"></div><button class="next" id="n5" data-action="next" data-i18n="next">下一步 →</button></section>
-<section class="screen question" id="s6"><div class="top"><button class="back" data-action="back">←</button><span class="progress">06 / 07</span></div><h2 data-i18n="q6title">Sunday soundtrack</h2><p class="sub" data-i18n="q6sub">凭第一感觉选，点击卡片即可播放。</p><div class="grid" id="music"></div><button class="next" id="n6" data-action="next" data-i18n="next">下一步 →</button></section>
+<section class="screen question" id="s6"><div class="top"><button class="back" data-action="back">←</button><span class="progress">06 / 07</span></div><h2 data-i18n="q6title">周日音乐</h2><p class="sub" data-i18n="q6sub">凭第一感觉选择你播放的第一首音乐。</p><div class="grid" id="music"></div><button class="next" id="n6" data-action="next" data-i18n="next">下一步 →</button></section>
 <section class="screen question" id="s7"><div class="top"><button class="back" data-action="back">←</button><span class="progress">07 / 07</span></div><h2 data-i18n="q7title">有人敲门</h2><p class="sub" data-i18n-html="q7sub">下午 5:20。<br>你的朋友突然来找你。</p><div class="options" id="friend"></div><button class="next" id="n7" data-i18n="seeResult">看看你的 Sunday →</button></section>
 
 <section class="screen result" id="s8">
@@ -141,7 +140,6 @@ body{min-height:100svh;overscroll-behavior-y:none}
 <div class="toast" id="toast">已复制分享文案</div><div class="confetti" id="confetti"></div>
 </div>
 
-<script src="./qr.js"></script>
 <script src="./app.js"></script>
 
 </body>
